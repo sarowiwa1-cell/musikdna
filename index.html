@@ -1,0 +1,469 @@
+<!DOCTYPE html><html lang="de"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f59e0b">
+<title>Musik DNA</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#e5e5e5;font-family:Georgia,serif;min-height:100vh}
+.pg{display:none;flex-direction:column;min-height:100vh;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
+.pg.on{display:flex}
+#a{background:radial-gradient(ellipse at 50% 0%,#1a1000,#0a0a0a 60%)}
+#u{background:radial-gradient(ellipse at 50% 100%,#001a0a,#0a0a0a 60%)}
+.ico{font-size:52px;margin-bottom:20px}
+h1{font-size:26px;font-weight:normal;color:#fff;margin-bottom:10px}
+.sub{font-size:14px;color:#737373;line-height:1.7;margin-bottom:32px;max-width:300px}
+input.f{width:100%;max-width:340px;background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:14px;color:#e5e5e5;font-size:14px;font-family:monospace;margin-bottom:12px;outline:none}
+input.f:focus{border-color:#f59e0b}
+button{cursor:pointer;font-family:Georgia,serif}
+.btn{width:100%;max-width:340px;background:#f59e0b;border:none;border-radius:12px;padding:14px;color:#000;font-size:15px;font-weight:bold;margin-bottom:10px;display:block}
+.btn:active{background:#d97706}
+.bto{background:transparent;border:1px solid #333;color:#737373}
+.bto:active{border-color:#f59e0b;color:#fff}
+.hint{font-size:12px;color:#525252;margin-top:14px;max-width:280px;line-height:1.6}
+.hint a,.hw a{color:#f59e0b}
+.dz{width:100%;max-width:340px;border:2px dashed #333;border-radius:16px;padding:36px 20px;margin-bottom:14px;position:relative;background:#0f0f0f}
+.dz:active{border-color:#f59e0b;background:#1a1000}
+.dz input{position:absolute;inset:0;opacity:0;width:100%;height:100%}
+.dz p{font-size:14px;color:#737373;line-height:1.6}
+.dz p strong{color:#e5e5e5}
+.st{font-size:13px;color:#f59e0b;font-family:monospace;min-height:20px;margin-bottom:12px}
+.hw{font-size:12px;color:#525252;margin-top:16px;line-height:1.8;max-width:280px}
+#m{display:none;flex-direction:column;min-height:100vh;align-items:stretch;padding:0;text-align:left}
+#m.on{display:flex}
+.hd{background:#0d0d0d;border-bottom:1px solid #222;padding:16px 18px}
+.hl{font-size:10px;letter-spacing:3px;color:#f59e0b;text-transform:uppercase;font-family:monospace;margin-bottom:2px}
+.hd h1{font-size:21px;font-weight:normal;color:#fff}
+.hr{display:flex;justify-content:space-between;align-items:flex-start}
+.ha{display:flex;gap:8px}
+.ib{background:none;border:1px solid #333;color:#737373;width:34px;height:34px;border-radius:8px;font-size:14px}
+.ib:active{border-color:#f59e0b;color:#f59e0b}
+.sr{display:flex;gap:20px;margin-top:10px}
+.sv{font-size:12px;color:#737373}
+.sv strong{color:#f59e0b;font-size:16px;display:block;line-height:1.1}
+.tb{display:flex;background:#0d0d0d;border-bottom:1px solid #222;overflow-x:auto;scrollbar-width:none}
+.tb::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:11px 16px;border:none;background:none;color:#737373;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-family:monospace;border-bottom:2px solid transparent}
+.tab.on{color:#f59e0b;border-bottom-color:#f59e0b}
+.bd{flex:1;overflow-y:auto;padding:18px 16px 40px}
+.cd{background:#141414;border:1px solid #222;border-radius:12px;padding:16px;margin-bottom:14px}
+.cl{font-size:10px;letter-spacing:3px;color:#737373;text-transform:uppercase;font-family:monospace;margin-bottom:14px}
+.ci{border-left:3px solid #f59e0b;background:#0f0d00}
+.ci .cl{color:#f59e0b}
+.ci p{font-size:14px;line-height:1.75;color:#ccc}
+.ci strong{color:#fff}
+.ar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rk{width:18px;color:#737373;font-size:11px;font-family:monospace;text-align:right;flex-shrink:0}
+.an{width:150px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.bw{flex:1;background:#222;border-radius:2px;height:5px;overflow:hidden}
+.br{height:100%;border-radius:2px;background:#f59e0b}
+.ac{width:28px;text-align:right;color:#737373;font-size:11px;font-family:monospace;flex-shrink:0}
+.gg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gc{background:#1c1c1c;border:1px solid #222;border-radius:10px;padding:10px 12px}
+.gd{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.gdt{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.gn{font-size:12px;color:#e5e5e5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gbw{background:#2a2a2a;border-radius:2px;height:3px}
+.gb{height:100%;border-radius:2px}
+.gc2{font-size:11px;color:#737373;font-family:monospace;margin-top:4px}
+.dc{display:flex;align-items:flex-end;gap:5px;height:110px;padding-bottom:20px}
+.dcl{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+
+.db{width:100%;border-radius:3px 3px 0 0;min-height:3px}
+.dl{font-size:9px;color:#737373;font-family:monospace}
+.fi{margin-bottom:16px}
+.fh{display:flex;justify-content:space-between;margin-bottom:5px}
+.fl{font-size:12px;font-family:monospace;color:#f59e0b}
+.fv{font-size:12px;font-family:monospace;color:#737373}
+.fbw{background:#222;border-radius:2px;height:4px;margin-bottom:6px}
+.fb{height:100%;background:#f59e0b;border-radius:2px}
+.fn{font-size:12px;color:#737373;line-height:1.5}
+.rg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px}
+.rb{background:#141414;border:1px solid #333;color:#737373;padding:12px 6px;border-radius:10px;font-size:12px;text-align:center;line-height:1.5}
+.rb.on{border-color:#f59e0b;color:#f59e0b;background:#120e00}
+.ld{text-align:center;padding:48px 20px}
+.ld .nt{font-size:40px;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.ld p{font-family:monospace;font-size:12px;color:#737373;margin-top:14px}
+.rc{background:#141414;border:1px solid #222;border-radius:12px;padding:16px;margin-bottom:10px}
+.rn{font-size:16px;color:#fff;font-weight:bold;margin-bottom:6px}
+.rt{display:inline-block;font-size:11px;color:#f59e0b;background:#1a1000;padding:3px 9px;border-radius:10px;margin-bottom:10px;font-family:monospace}
+.rw{font-size:13px;color:#aaa;line-height:1.65;margin-bottom:10px}
+.rs{font-size:12px;color:#737373;font-family:monospace}
+.rs span{color:#f59e0b}
+.ex{background:#141414;border:1px solid #222;border-radius:12px;padding:16px;margin-bottom:10px;border-left:3px solid}
+.alr{display:flex;gap:12px;align-items:flex-start}
+.ali{width:44px;height:44px;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ala{color:#f59e0b;font-size:13px;margin-bottom:6px;font-family:monospace}
+.re{text-align:center;padding:40px 20px;color:#737373;font-size:14px;line-height:1.8}
+.re strong{color:#e5e5e5}
+.ov{display:none;position:fixed;inset:0;background:#000c;z-index:999;align-items:flex-end;justify-content:center}
+.ov.on{display:flex}
+.md{background:#141414;border:1px solid #333;border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;animation:up .3s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mh{width:36px;height:4px;background:#333;border-radius:2px;margin:0 auto 20px}
+.md h2{font-size:20px;font-weight:normal;color:#fff;margin-bottom:6px}
+.ms{font-size:13px;color:#737373;line-height:1.6;margin-bottom:20px}
+.mdz{border:2px dashed #333;border-radius:14px;padding:30px 20px;text-align:center;position:relative;background:#0f0f0f;margin-bottom:12px}
+.mdz:active{border-color:#f59e0b;background:#1a1000}
+.mdz input{position:absolute;inset:0;opacity:0;width:100%;height:100%}
+.mdz p{font-size:14px;color:#737373}
+.mdz p strong{color:#e5e5e5}
+.mst{font-size:13px;color:#f59e0b;font-family:monospace;text-align:center;min-height:18px;margin-bottom:12px}
+.mc{width:100%;background:none;border:1px solid #333;border-radius:10px;padding:12px;color:#737373;font-size:14px}
+.mw{font-size:12px;color:#525252;line-height:1.8;margin-top:14px;text-align:center}
+.mw a{color:#f59e0b}
+</style></head><body>
+
+<div id="a" class="pg on">
+  <div class="ico">🎵</div>
+  <h1>Musik DNA</h1>
+  <p class="sub">Deine Spotify-Analyse mit KI-Empfehlungen. API Key einmalig eingeben — bleibt lokal auf diesem Gerät.</p>
+  <input id="ki" class="f" type="password" placeholder="sk-ant-api03-..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <button class="btn" onclick="saveKey()">Weiter →</button>
+  <p class="hint">Key erstellen auf <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
+</div>
+
+<div id="u" class="pg">
+  <div class="ico">📂</div>
+  <h1>Songs laden</h1>
+  <p class="sub">Lade deine Spotify-CSV hoch um dein Musikprofil zu erstellen.</p>
+  <div class="dz">
+    <input type="file" accept=".csv" onchange="loadCSV(this,'us',false)">
+    <div style="font-size:36px;margin-bottom:10px">🎵</div>
+    <p><strong>Tippen zum Auswählen</strong><br>Liked Songs CSV</p>
+  </div>
+  <div class="st" id="us"></div>
+  <button class="btn" id="ub" style="display:none" onclick="gotoApp()">Dashboard öffnen →</button>
+  <button class="btn bto" onclick="demo()">Demo-Daten verwenden</button>
+  <p class="hw">Export via <a href="https://exportify.net" target="_blank">exportify.net</a> → Export CSV</p>
+</div>
+
+<div id="m">
+  <div class="hd">
+    <div class="hr">
+      <div><div class="hl">Spotify Analyse</div><h1>Musik DNA</h1></div>
+      <div class="ha">
+        <button class="ib" onclick="openModal()">⬆</button>
+        <button class="ib" onclick="doReset()">✕</button>
+      </div>
+    </div>
+    <div class="sr">
+      <div class="sv"><strong id="sS">—</strong>Songs</div>
+      <div class="sv"><strong id="sA">—</strong>Künstler</div>
+      <div class="sv"><strong id="sG">—</strong>Genres</div>
+    </div>
+  </div>
+  <div class="tb" id="tabs"></div>
+  <div class="bd" id="bd"></div>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target.id=='ov')closeModal()">
+  <div class="md">
+    <div class="mh"></div>
+    <h2>Songs aktualisieren</h2>
+    <p class="ms">Neue CSV laden — Profil wird sofort aktualisiert.</p>
+    <div class="mdz">
+      <input type="file" accept=".csv" onchange="loadCSV(this,'mst',true)">
+      <div style="font-size:30px;margin-bottom:8px">📂</div>
+      <p><strong>CSV auswählen</strong></p>
+    </div>
+    <div class="mst" id="mst"></div>
+    <button class="mc" onclick="closeModal()">Schließen</button>
+    <p class="mw">Export: <a href="https://exportify.net" target="_blank">exportify.net</a> → Export CSV</p>
+  </div>
+</div>
+
+<script>
+var C=['#f59e0b','#ef4444','#8b5cf6','#3b82f6','#10b981','#f97316','#ec4899','#06b6d4','#84cc16','#a78bfa','#fb923c','#34d399','#60a5fa','#f472b6','#facc15'];
+var KEY='',MD=null,RT='',RD=null,RL=false;
+
+function g(id){return document.getElementById(id)}
+function lget(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function esc(s){var d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML}
+
+function show(id){
+  ['a','u','m'].forEach(function(x){
+    var el=g(x);
+    el.classList.remove('on');
+    el.style.display='';
+  });
+  var el=g(id);
+  if(id==='m'){el.style.display='flex';el.classList.add('on');}
+  else{el.classList.add('on');}
+}
+
+window.addEventListener('load',function(){
+  var k=lget('mk'),d=lget('md');
+  if(k)KEY=k;
+  if(k&&d){try{MD=JSON.parse(d);show('m');buildApp();}catch(e){show('u');}}
+  else if(k){show('u');}
+  else{show('a');}
+  buildTabs();
+});
+
+function saveKey(){
+  var v=(g('ki').value||'').trim();
+  if(!v){alert('Bitte Key eingeben');return;}
+  KEY=v;lset('mk',v);show('u');
+}
+
+function doReset(){
+  if(!confirm('Alles löschen und neu starten?'))return;
+  try{localStorage.clear()}catch(e){}
+  location.reload();
+}
+
+function openModal(){g('ov').classList.add('on');g('mst').textContent=''}
+function closeModal(){g('ov').classList.remove('on')}
+
+function csvLine(l){
+  var r=[],c='',q=false;
+  for(var i=0;i<l.length;i++){
+    if(l[i]==='"'){q=!q}
+    else if(l[i]===','&&!q){r.push(c);c='';}
+    else c+=l[i];
+  }
+  r.push(c);return r;
+}
+
+function parseCSV(txt){
+  var lines=txt.replace(/\r/g,'').split('\n');
+  if(lines.length<2)return null;
+  lines[0]=lines[0].replace(/^\uFEFF/,'');
+  var h=csvLine(lines[0]),rows=[];
+  for(var i=1;i<lines.length;i++){
+    if(!lines[i].trim())continue;
+    var v=csvLine(lines[i]),r={};
+    h.forEach(function(k,j){r[k.trim()]=(v[j]||'').trim();});
+    rows.push(r);
+  }
+  return rows;
+}
+
+function analyze(rows){
+  var ac={},gc={},dc={};
+  var fk=['Danceability','Energy','Speechiness','Acousticness','Instrumentalness','Liveness','Valence'];
+  var fa={};fk.forEach(function(k){fa[k]=[];});
+  rows.forEach(function(r){
+    (r['Artist Name(s)']||r['Artist']||'').split(';').forEach(function(a){
+      a=a.trim();if(a)ac[a]=(ac[a]||0)+1;
+    });
+    (r['Genres']||'').split(',').forEach(function(g){
+      g=g.trim();if(g)gc[g]=(gc[g]||0)+1;
+    });
+    var yr=parseInt((r['Release Date']||'').slice(0,4));
+    if(yr>1900){var d=Math.floor(yr/10)*10;dc[d]=(dc[d]||0)+1;}
+    fk.forEach(function(k){var v=parseFloat(r[k]);if(!isNaN(v))fa[k].push(v);});
+  });
+  var avg={};
+  fk.forEach(function(k){
+    avg[k]=fa[k].length?Math.round(fa[k].reduce(function(a,b){return a+b},0)/fa[k].length*1000)/1000:0;
+  });
+  return{
+    total:rows.length,
+    topArtists:Object.entries(ac).sort(function(a,b){return b[1]-a[1]}).slice(0,15).map(function(e){return{name:e[0],count:e[1]}}),
+    topGenres:Object.entries(gc).sort(function(a,b){return b[1]-a[1]}).slice(0,20).map(function(e){return{name:e[0],count:e[1]}}),
+    decades:Object.entries(dc).sort(function(a,b){return a[0]-b[0]}).map(function(e){return{decade:e[0],count:e[1]}}),
+    audioFeatures:avg
+  };
+}
+
+function loadCSV(inp,sid,isModal){
+  var f=inp.files[0];if(!f)return;
+  g(sid).textContent='⟳ Lese Datei…';
+  var fr=new FileReader();
+  fr.onload=function(ev){
+    try{
+      var rows=parseCSV(ev.target.result);
+      if(!rows||rows.length<2){g(sid).textContent='⚠ Ungültige Datei';return;}
+      MD=analyze(rows);
+      try{lset('md',JSON.stringify(MD))}catch(e){}
+      g(sid).textContent='✓ '+MD.total+' Songs geladen!';
+      if(isModal){setTimeout(function(){closeModal();buildApp();},1000);}
+      else{g('ub').style.display='block';}
+    }catch(ex){g(sid).textContent='⚠ Fehler: '+ex.message;}
+  };
+  fr.onerror=function(){g(sid).textContent='⚠ Lesefehler'};
+  fr.readAsText(f,'utf-8');
+}
+
+function demo(){
+  MD={total:1583,topArtists:[{name:"Radiohead",count:66},{name:"The Beatles",count:56},{name:"The Velvet Underground",count:51},{name:"Nico",count:41},{name:"The Smashing Pumpkins",count:36},{name:"Eels",count:33},{name:"Arcade Fire",count:32},{name:"David Bowie",count:31},{name:"The Rolling Stones",count:29},{name:"Bob Dylan",count:28},{name:"Sufjan Stevens",count:25},{name:"Blur",count:21},{name:"The Smiths",count:21},{name:"The Flaming Lips",count:17},{name:"Nirvana",count:16}],topGenres:[{name:"Alternative Rock",count:204},{name:"Klassischer Rock",count:194},{name:"Art Rock",count:177},{name:"Rock",count:173},{name:"Baroque Pop",count:111},{name:"Proto-Punk",count:108},{name:"Psychedelic Rock",count:101},{name:"Indie Rock",count:99},{name:"Singer-Songwriter",count:94},{name:"Folk Rock",count:83},{name:"Madchester",count:81},{name:"Deutscher Indie",count:73},{name:"Britpop",count:72},{name:"New Wave",count:71},{name:"Indie",count:70}],decades:[{decade:"1950",count:3},{decade:"1960",count:220},{decade:"1970",count:207},{decade:"1980",count:121},{decade:"1990",count:308},{decade:"2000",count:442},{decade:"2010",count:268},{decade:"2020",count:14}],audioFeatures:{Danceability:0.517,Energy:0.622,Speechiness:0.052,Acousticness:0.268,Instrumentalness:0.126,Liveness:0.189,Valence:0.511}};
+  try{lset('md',JSON.stringify(MD))}catch(e){}
+  gotoApp();
+}
+
+function gotoApp(){show('m');buildApp();}
+
+function buildApp(){
+  if(!MD)return;
+  g('sS').textContent=MD.total.toLocaleString('de');
+  g('sA').textContent=MD.topArtists.length+'+';
+  g('sG').textContent=MD.topGenres.length+'+';
+  RT='';RD=null;RL=false;
+  renderTab('ov');
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
+  document.querySelector('.tab').classList.add('on');
+}
+
+function buildTabs(){
+  var tabs=[{id:'ov',label:'Übersicht'},{id:'ge',label:'Genres'},{id:'so',label:'Klang'},{id:'di',label:'KI-Tipps'}];
+  g('tabs').innerHTML=tabs.map(function(t){
+    return '<button class="tab" data-id="'+t.id+'">'+t.label+'</button>';
+  }).join('');
+  document.querySelectorAll('.tab').forEach(function(btn){
+    btn.onclick=function(){
+      RT='';RD=null;RL=false;
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+      btn.classList.add('on');
+      renderTab(btn.dataset.id);
+    };
+  });
+}
+
+function renderTab(id){
+  if(!MD)return;
+  var bd=g('bd');
+  if(id==='ov')bd.innerHTML=rOv();
+  else if(id==='ge')bd.innerHTML=rGe();
+  else if(id==='so')bd.innerHTML=rSo();
+  else if(id==='di'){bd.innerHTML=rDi();bindRecBtns();}
+}
+
+function rOv(){
+  var d=MD,mA=d.topArtists[0].count,mD=Math.max.apply(null,d.decades.map(function(x){return x.count}));
+  var ars=d.topArtists.map(function(a,i){
+    var op=i===0?1:i<3?0.7:0.4;
+    return '<div class="ar"><div class="rk">'+(i+1)+'</div>'
+      +'<div class="an" style="color:'+(i<3?'#fff':'#e5e5e5')+'">'+esc(a.name)+'</div>'
+      +'<div class="bw"><div class="br" style="width:'+Math.round(a.count/mA*100)+'%;opacity:'+op+'"></div></div>'
+      +'<div class="ac">'+a.count+'</div></div>';
+  }).join('');
+  var decs=d.decades.map(function(x){
+    var px=Math.round(x.count/mD*80),im=x.count===mD;
+    return '<div class="dcl"><div class="db" style="height:'+px+'px;background:'+(im?'#f59e0b':'#333')+'"></div>'
+      +'<div class="dl">'+String(x.decade).slice(2)+'s</div></div>';
+  }).join('');
+  return '<div class="cd ci"><div class="cl">KI-Profil</div>'
+    +'<p>Ein <strong>musikalischer Archivar</strong> der Rock-Avantgarde. Radiohead, Velvet Underground und Beatles als Kern — Leidenschaft für <strong>experimentelle, literarische Musik</strong>. Nico und Deutscher Indie: kosmopolitische Neugier. Energisch aber introspektiv.</p></div>'
+    +'<div class="cd"><div class="cl">Lieblingskünstler</div>'+ars+'</div>'
+    +'<div class="cd"><div class="cl">Nach Jahrzehnt</div><div class="dc">'+decs+'</div></div>';
+}
+
+function rGe(){
+  var d=MD,mG=d.topGenres[0].count;
+  var chips=d.topGenres.map(function(g,i){
+    return '<div class="gc"><div class="gd"><div class="gdt" style="background:'+C[i%C.length]+'"></div>'
+      +'<div class="gn">'+esc(g.name)+'</div></div>'
+      +'<div class="gbw"><div class="gb" style="width:'+Math.round(g.count/mG*100)+'%;background:'+C[i%C.length]+'"></div></div>'
+      +'<div class="gc2">'+g.count+' Songs</div></div>';
+  }).join('');
+  return '<div class="gg">'+chips+'</div>'
+    +'<div class="cd ci" style="margin-top:14px"><div class="cl">Auffällig</div>'
+    +'<p><strong>Madchester</strong> 81 Songs — Haçienda-Ära tief verwurzelt. <strong>Proto-Punk + Baroque Pop</strong> nebeneinander. <strong>Deutscher Indie</strong> überraschend stark für einen anglophonen Geschmack.</p></div>';
+}
+
+function rSo(){
+  var f=MD.audioFeatures;
+  var items=[
+    {k:'Energy',n:'Mittel-hoch — Drive wichtig, kein reines Dancefloor-Material.'},
+    {k:'Valence',n:'Balanciert — kein Moll-Purist, kein Daueroptimist.'},
+    {k:'Danceability',n:'Subtiler Groove — Rhythmus ja, Disco nein.'},
+    {k:'Acousticness',n:'Mehr elektrisch als akustisch, beides willkommen.'},
+    {k:'Instrumentalness',n:'Stimmen wichtig — Texte und Geschichten.'},
+    {k:'Speechiness',n:'Kein Hip-Hop-Profil — Texte eingebettet, nicht gesprochen.'},
+    {k:'Liveness',n:'Studioqualität bevorzugt, Live-Charakter geschätzt.'}
+  ].map(function(x){
+    return '<div class="fi"><div class="fh"><span class="fl">'+x.k+'</span><span class="fv">'+Math.round(f[x.k]*100)+'%</span></div>'
+      +'<div class="fbw"><div class="fb" style="width:'+Math.round(f[x.k]*100)+'%"></div></div>'
+      +'<div class="fn">'+x.n+'</div></div>';
+  }).join('');
+  return '<div class="cd"><div class="cl">Audio-Fingerprint</div>'+items+'</div>';
+}
+
+function rDi(){
+  var btns=['artists','albums','explore'].map(function(t,i){
+    var l=['🎸 Neue<br>Künstler','💿 Must-Hear<br>Alben','🌍 Neue<br>Genres'][i];
+    return '<button class="rb'+(RT===t?' on':'')+'" data-type="'+t+'">'+l+'</button>';
+  }).join('');
+  var res='';
+  if(RL)res='<div class="ld"><div class="nt">♪</div><p>Claude analysiert dein Profil…</p></div>';
+  else if(RD)res=rCards();
+  else res='<div class="re">Kategorie wählen — Claude generiert Empfehlungen basierend auf deinen <strong>'+MD.total.toLocaleString('de')+' Songs</strong>.</div>';
+  return '<div class="rg">'+btns+'</div>'+res;
+}
+
+function bindRecBtns(){
+  document.querySelectorAll('.rb').forEach(function(btn){
+    btn.onclick=function(){loadRecs(btn.dataset.type);};
+  });
+}
+
+function rCards(){
+  if(!RD||!RD.length)return '<div class="re">Keine Ergebnisse.</div>';
+  function surl(q){return 'https://open.spotify.com/search/'+encodeURIComponent(q);}
+  function sbtn(label,q){return '<a href="'+surl(q)+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;background:#1DB954;color:#000;text-decoration:none;padding:7px 12px;border-radius:20px;font-size:12px;font-family:monospace;font-weight:bold;">▶ '+label+'</a>';}
+  if(RT==='artists')return RD.map(function(r){
+    return '<div class="rc"><div class="rn">'+esc(r.name)+'</div><div class="rt">'+esc(r.genre)+'</div>'
+      +'<div class="rw">'+esc(r.why)+'</div>'
+      +'<div class="rs" style="margin-bottom:4px">Einstieg: <span>'+esc(r.startWith)+'</span></div>'
+      +sbtn('Auf Spotify öffnen', r.name)+'</div>';
+  }).join('');
+  if(RT==='albums')return RD.map(function(r){
+    return '<div class="rc"><div class="alr"><div class="ali">💿</div><div style="flex:1">'
+      +'<div class="rn">'+esc(r.album)+'</div><div class="ala">'+esc(r.artist)+' · '+esc(r.year)+'</div>'
+      +'<div class="rw">'+esc(r.why)+'</div>'
+      +sbtn('Auf Spotify öffnen', r.album+' '+r.artist)
+      +'</div></div></div>';
+  }).join('');
+  if(RT==='explore')return RD.map(function(r,i){
+    return '<div class="ex" style="border-color:'+C[i]+'"><div class="rn">'+esc(r.genre)+'</div>'
+      +'<div class="rw" style="margin-top:8px">'+esc(r.description)+'</div>'
+      +'<div class="rs" style="margin-top:8px">Einstieg: <span style="color:'+C[i]+'">'+esc(r.startArtist)+'</span> — '+esc(r.startAlbum)+'</div>'
+      +sbtn('Einstieg auf Spotify', r.startArtist+' '+r.startAlbum)+'</div>';
+  }).join('');
+  return '';
+}
+
+async function loadRecs(type){
+  RT=type;RL=true;RD=null;
+  g('bd').innerHTML=rDi();
+  var d=MD;
+  var prof='Lieblingskünstler: '+d.topArtists.slice(0,10).map(function(a){return a.name}).join(', ')
+    +'. Genres: '+d.topGenres.slice(0,10).map(function(g){return g.name}).join(', ')
+    +'. '+d.total+' Songs gesamt.';
+  var pm={
+    artists:'Profil: '+prof+'\nEmpfehle 8 unbekannte Künstler die passen.\nNUR JSON-Array: [{"name":"","genre":"","why":"1 Satz","startWith":""}]',
+    albums:'Profil: '+prof+'\nEmpfehle 8 passende Alben.\nNUR JSON-Array: [{"album":"","artist":"","year":"","why":"1 Satz"}]',
+    explore:'Profil: '+prof+'\nEmpfehle 5 neue Genres die noch fehlen.\nNUR JSON-Array: [{"genre":"","description":"2 Sätze","startArtist":"","startAlbum":""}]'
+  };
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':KEY,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:pm[type]}]})
+    });
+    var data=await res.json();
+    if(data.error){
+      RD=[{name:'API Fehler: '+data.error.type,genre:'',why:data.error.message,startWith:'Key prüfen auf console.anthropic.com → Billing'}];
+    } else {
+      var txt=(data.content||[]).map(function(b){return b.text||''}).join('').replace(/```json|```/g,'').trim();
+      RD=JSON.parse(txt);
+    }
+  }catch(ex){
+    RD=[{name:'Verbindungsfehler',genre:'',why:ex.message,startWith:'Seite neu laden und nochmal versuchen'}];
+  }
+  RL=false;
+  g('bd').innerHTML=rDi();
+  bindRecBtns();
+}
+</script>
+</body></html>
